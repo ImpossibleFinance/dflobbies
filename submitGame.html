@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Collecting Data</title>
+	<script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+	</script>
+
+	<link rel="stylesheet" href=
+"https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+		integrity=
+"sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+		crossorigin="anonymous">
+</head>
+
+<body class="container" style="margin-top: 50px;
+	width: 50%; height:auto;">
+	
+	<h4 class="text-primary" style=
+		"margin-left: 15px; margin-bottom: 10px">
+		list your dark forest game lobby
+	</h4>
+    <h6>Powered by Impossible.Finance
+    </h6>
+
+    <p>If you are looking for a game, check out the available games <a href="./index.html">here</a></p>
+    
+    <form class="container" id="gameForm">
+		<div class="card">
+			<div class="card-body">
+				<div class="form-group">
+					<label for="gameFormLabel">
+						Game Name
+					</label>
+					
+					<input type="text" class="form-control"
+					id="gameName" placeholder="Impossible Community Round">
+				</div>
+                <div class="form-group">
+					<label for="gameFormLabel">
+						Game Admin Name (Twitter)
+					</label>
+					
+					<input type="text" class="form-control"
+					id="adminName" placeholder="@impossiblefi">
+				</div>
+
+				<div class="form-group">
+					<label for="gameFormLabel">
+						Lobby Link Address
+					</label>
+					
+					<input type="text" class="form-control"
+					id="gameUrl" placeholder="https://zkga.me/0xabc...">
+				</div>
+			</div>
+			<button type="submit" class="btn btn-primary"
+				style="margin-left: 15px; margin-top: 10px">
+				Submit
+			</button>
+		</div>
+	</form>
+    
+    
+
+	<script src=
+"https://www.gstatic.com/firebasejs/3.7.4/firebase.js">
+	</script>
+	
+	<script>
+		var firebaseConfig = {
+		 apiKey: "AIzaSyA5K_PnJm_7d6N-NUOBWG9EZ0NhKPbNhGI",
+    authDomain: "impossibledflobby.firebaseapp.com",
+    projectId: "impossibledflobby",
+             databaseURL: "https://impossibledflobby-default-rtdb.firebaseio.com/",
+    storageBucket: "impossibledflobby.appspot.com",
+    messagingSenderId: "575311250876",
+    appId: "1:575311250876:web:da185ed7a4ce9d63f497b9",
+    measurementId: "G-98JMC1M8NG"
+		};
+
+		firebase.initializeApp(firebaseConfig);
+
+		var messagesRef = firebase.database()
+			.ref('GameLobbies');
+		
+		document.getElementById('gameForm')
+			.addEventListener('submit', submitForm);
+
+		function submitForm(e) {
+			e.preventDefault();
+
+			// Get values
+			var gameName = getInputVal('gameName');
+			var adminName = getInputVal('adminName');
+            var gameUrl = getInputVal('gameUrl');
+
+			saveMessage(gameName, adminName, gameUrl);
+			document.getElementById('gameForm').reset();
+		}
+
+		// Function to get get form values
+		function getInputVal(id) {
+			return document.getElementById(id).value;
+		}
+
+		// Save message to firebase
+		function saveMessage(gameName, adminName, gameUrl) {
+			var newMessageRef = messagesRef.push();
+			newMessageRef.set({
+				gameName: gameName,
+				adminName: adminName,
+                gameUrl: gameUrl,
+                submitTime: Date.now(),
+			});
+		}
+	</script>
+</body>
+
+</html>
